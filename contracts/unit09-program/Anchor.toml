@@ -1,0 +1,184 @@
+# ====================================================================================
+#  Anchor Configuration File
+#  Project: Unit09 – On-chain AI Raccoon System
+#  Description: Full production-grade config for Anchor, including cluster overrides,
+#               workspace definitions, validator preload, IDL paths, deployment scripts,
+#               formatting rules, CI/CD hooks, and optional metadata.
+# ====================================================================================
+
+# ------------------------------
+# Feature Flags
+# ------------------------------
+[features]
+seeds = true
+skip-lint = false
+idl-build = true
+init-if-needed = true
+anchor-debug = false
+abort-on-panic = true
+
+# ------------------------------
+# Workspace Configuration
+# ------------------------------
+[workspace]
+members = [
+  "programs/unit09_program"
+]
+
+exclude = [
+  "docs",
+  "scripts",
+  "tests/helpers"
+]
+
+resolver = "2"
+
+# ------------------------------
+# Programs – Localnet (default)
+# ------------------------------
+[programs.localnet]
+unit09_program = "UNIT9mB7Z2F8cUXa11111111111111111111111111"
+
+# ------------------------------
+# Programs – Devnet
+# (replace with actual address after deploying)
+# ------------------------------
+[programs.devnet]
+unit09_program = "UNIT9DEV111111111111111111111111111111111"
+
+# ------------------------------
+# Programs – Testnet
+# ------------------------------
+[programs.testnet]
+unit09_program = "UNIT9TEST1111111111111111111111111111111"
+
+# ------------------------------
+# Programs – Mainnet
+# ------------------------------
+[programs.mainnet]
+unit09_program = "UNIT9MAIN1111111111111111111111111111111"
+
+# ------------------------------
+# Global Registry URL
+# ------------------------------
+[registry]
+url = "https://api.apr.dev"
+
+# ------------------------------
+# Provider Configuration
+# ------------------------------
+[provider]
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"
+commitment = "confirmed"
+skip-preflight = false
+rpc-timeout = 20000
+ws-timeout = 20000
+
+# Allow override with environment variables (recommended for CI/CD)
+wallet_override = "${ANCHOR_WALLET}"
+cluster_override = "${ANCHOR_CLUSTER}"
+
+# ------------------------------
+# Test Validator Configuration
+# Anchor test spins up an ephemeral ledger
+# ------------------------------
+[test.validator]
+url = "http://127.0.0.1:8899"
+ledger = ".test-ledger"
+reset-ledger = true
+
+# -------- Preloaded Token Mint Fixtures
+[[test.validator.account]]
+address = "So11111111111111111111111111111111111111112"
+filename = "tests/fixtures/sol_mint.json"
+
+# Clone SPL-Token program
+[[test.validator.clone]]
+address = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+
+# Load custom PDA accounts (optional)
+[[test.validator.account]]
+address = "UNIT9CFG11111111111111111111111111111111111"
+filename = "tests/fixtures/unit09_config.json"
+
+# ------------------------------
+# CLI Behavior
+# ------------------------------
+[cli]
+default_program = "unit09_program"
+verbosity = 2
+
+# ------------------------------
+# IDL Configuration
+# ------------------------------
+[idl]
+out = "idl"
+format = "json"
+anchor-vrf-idl = false
+ts-bindings-out = "sdk/types"
+
+# ------------------------------
+# Docs Generation (optional)
+# ------------------------------
+[docs]
+out = "docs"
+format = "markdown"
+include-idl = true
+
+# ------------------------------
+# Deploy Scripts / Build Hooks
+# ------------------------------
+[scripts]
+test = "pnpm ts-mocha -p ./tsconfig.json -t 2000000 'tests/**/*.ts'"
+lint = "pnpm eslint ."
+typecheck = "pnpm tsc --noEmit"
+prebuild = "echo Prebuild hook executed"
+build = "anchor build"
+deploy-devnet = "node scripts/deploy-devnet.ts"
+deploy-localnet = "node scripts/deploy-localnet.ts"
+verify = "node scripts/verify-on-explorer.ts"
+generate-idl = "node scripts/generate-idl.ts"
+
+# ------------------------------
+# Format Rules
+# ------------------------------
+[format]
+rustfmt = true
+max_width = 110
+use_tabs = false
+newline_style = "unix"
+
+# ------------------------------
+# Toolchain Lock
+# ------------------------------
+[tools]
+solana = "solana"
+node = "node"
+anchor = "anchor"
+cargo = "cargo"
+rustc = "rustc"
+solana-version = "2.0.3"
+anchor-version = "0.30.1"
+
+# ------------------------------
+# Named Accounts
+# ------------------------------
+[accounts]
+admin = "~/.config/solana/unit09-admin.json"
+operator = "~/.config/solana/unit09-operator.json"
+automation = "~/.config/solana/unit09-worker.json"
+
+# ------------------------------
+# Metadata (optional – for discoverability)
+# ------------------------------
+[metadata]
+authors = ["Unit09 Labs <team@unit09.ai>"]
+license = "Apache-2.0"
+repository = "https://github.com/unit09/unit09-program"
+documentation = "https://docs.unit09.ai/"
+keywords = ["solana", "anchor", "ai", "modular-code", "protocol"]
+description = "Unit09 – On-chain evolving AI raccoon that consumes code and produces modules"
+security-contact = "security@unit09.ai"
+tags = ["solana", "onchain", "module-system", "ai-protocol"]
+
