@@ -1,0 +1,886 @@
+{
+  "version": "0.1.0",
+  "name": "unit09_program",
+  "instructions": [
+    {
+      "name": "initialize",
+      "docs": [
+        "Bootstraps a fresh Unit09 deployment by creating the core singleton accounts:",
+        "- Config",
+        "- Metrics",
+        "- Lifecycle"
+      ],
+      "accounts": [
+        { "name": "payer", "isMut": true, "isSigner": true },
+        { "name": "admin", "isMut": false, "isSigner": false },
+        {
+          "name": "config",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "434f4e464947" }] }
+        },
+        {
+          "name": "metrics",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "4d455452494353" }] }
+        },
+        {
+          "name": "lifecycle",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "4c4946454359434c45" }] }
+        },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "rent", "isMut": false, "isSigner": false },
+        { "name": "clock", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "args", "type": { "defined": "InitializeArgs" } }
+      ]
+    },
+    {
+      "name": "setConfig",
+      "docs": [
+        "Updates the global configuration of a Unit09 deployment.",
+        "Only the admin stored in Config may call this instruction."
+      ],
+      "accounts": [
+        { "name": "admin", "isMut": true, "isSigner": true },
+        {
+          "name": "config",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "434f4e464947" }] }
+        },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "clock", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "args", "type": { "defined": "SetConfigArgs" } }
+      ]
+    },
+    {
+      "name": "registerRepo",
+      "docs": [
+        "Registers a new repository with Unit09 and creates a Repo account."
+      ],
+      "accounts": [
+        { "name": "payer", "isMut": true, "isSigner": true },
+        { "name": "authority", "isMut": true, "isSigner": true },
+        {
+          "name": "config",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "434f4e464947" }] }
+        },
+        {
+          "name": "lifecycle",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "4c4946454359434c45" }] }
+        },
+        {
+          "name": "metrics",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "4d455452494353" }] }
+        },
+        { "name": "repo", "isMut": true, "isSigner": false },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "rent", "isMut": false, "isSigner": false },
+        { "name": "clock", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "args", "type": { "defined": "RegisterRepoArgs" } }
+      ]
+    },
+    {
+      "name": "updateRepo",
+      "docs": [
+        "Updates metadata and flags on an existing Repo account."
+      ],
+      "accounts": [
+        { "name": "authority", "isMut": true, "isSigner": true },
+        {
+          "name": "config",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "434f4e464947" }] }
+        },
+        {
+          "name": "lifecycle",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "4c4946454359434c45" }] }
+        },
+        { "name": "repo", "isMut": true, "isSigner": false },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "clock", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "args", "type": { "defined": "UpdateRepoArgs" } }
+      ]
+    },
+    {
+      "name": "registerModule",
+      "docs": [
+        "Registers a new Module under an existing Repo."
+      ],
+      "accounts": [
+        { "name": "payer", "isMut": true, "isSigner": true },
+        { "name": "authority", "isMut": true, "isSigner": true },
+        {
+          "name": "config",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "434f4e464947" }] }
+        },
+        {
+          "name": "lifecycle",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "4c4946454359434c45" }] }
+        },
+        {
+          "name": "metrics",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "4d455452494353" }] }
+        },
+        { "name": "repo", "isMut": true, "isSigner": false },
+        { "name": "module", "isMut": true, "isSigner": false },
+        { "name": "moduleVersion", "isMut": true, "isSigner": false },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "rent", "isMut": false, "isSigner": false },
+        { "name": "clock", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "args", "type": { "defined": "RegisterModuleArgs" } }
+      ]
+    },
+    {
+      "name": "updateModule",
+      "docs": [
+        "Updates metadata and version information on an existing Module and optionally creates a ModuleVersion snapshot."
+      ],
+      "accounts": [
+        { "name": "authority", "isMut": true, "isSigner": true },
+        {
+          "name": "config",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "434f4e464947" }] }
+        },
+        {
+          "name": "lifecycle",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "4c4946454359434c45" }] }
+        },
+        { "name": "repo", "isMut": true, "isSigner": false },
+        { "name": "module", "isMut": true, "isSigner": false },
+        { "name": "moduleVersion", "isMut": true, "isSigner": false },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "clock", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "args", "type": { "defined": "UpdateModuleArgs" } }
+      ]
+    },
+    {
+      "name": "linkModuleToRepo",
+      "docs": [
+        "Creates or refreshes a ModuleRepoLink association between a Module and a Repo."
+      ],
+      "accounts": [
+        { "name": "payer", "isMut": true, "isSigner": true },
+        { "name": "authority", "isMut": true, "isSigner": true },
+        {
+          "name": "config",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "434f4e464947" }] }
+        },
+        {
+          "name": "lifecycle",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "4c4946454359434c45" }] }
+        },
+        { "name": "repo", "isMut": true, "isSigner": false },
+        { "name": "module", "isMut": true, "isSigner": false },
+        { "name": "link", "isMut": true, "isSigner": false },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "rent", "isMut": false, "isSigner": false },
+        { "name": "clock", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "args", "type": { "defined": "LinkModuleToRepoArgs" } }
+      ]
+    },
+    {
+      "name": "createFork",
+      "docs": [
+        "Creates a new Fork account representing a Unit09 personality branch."
+      ],
+      "accounts": [
+        { "name": "payer", "isMut": true, "isSigner": true },
+        { "name": "owner", "isMut": true, "isSigner": true },
+        {
+          "name": "config",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "434f4e464947" }] }
+        },
+        {
+          "name": "lifecycle",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "4c4946454359434c45" }] }
+        },
+        { "name": "fork", "isMut": true, "isSigner": false },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "rent", "isMut": false, "isSigner": false },
+        { "name": "clock", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "args", "type": { "defined": "CreateForkArgs" } }
+      ]
+    },
+    {
+      "name": "updateForkState",
+      "docs": [
+        "Updates the high-level label, metadata, tags, and activation flag on an existing Fork."
+      ],
+      "accounts": [
+        { "name": "owner", "isMut": true, "isSigner": true },
+        {
+          "name": "config",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "434f4e464947" }] }
+        },
+        {
+          "name": "lifecycle",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "4c4946454359434c45" }] }
+        },
+        { "name": "fork", "isMut": true, "isSigner": false },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "clock", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "args", "type": { "defined": "UpdateForkStateArgs" } }
+      ]
+    },
+    {
+      "name": "recordObservation",
+      "docs": [
+        "Records an observation run over a tracked repository, updating Repo and Metrics stats."
+      ],
+      "accounts": [
+        { "name": "observer", "isMut": true, "isSigner": true },
+        {
+          "name": "config",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "434f4e464947" }] }
+        },
+        {
+          "name": "lifecycle",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "4c4946454359434c45" }] }
+        },
+        {
+          "name": "metrics",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "4d455452494353" }] }
+        },
+        { "name": "repo", "isMut": true, "isSigner": false },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "clock", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "args", "type": { "defined": "RecordObservationArgs" } }
+      ]
+    },
+    {
+      "name": "recordMetrics",
+      "docs": [
+        "Allows the admin to reconcile and override the global aggregate Metrics account."
+      ],
+      "accounts": [
+        { "name": "admin", "isMut": true, "isSigner": true },
+        {
+          "name": "config",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "434f4e464947" }] }
+        },
+        {
+          "name": "lifecycle",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "4c4946454359434c45" }] }
+        },
+        {
+          "name": "metrics",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "4d455452494353" }] }
+        },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "clock", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "args", "type": { "defined": "RecordMetricsArgs" } }
+      ]
+    },
+    {
+      "name": "setMetadata",
+      "docs": [
+        "Creates or updates the GlobalMetadata account, which holds human-facing deployment metadata."
+      ],
+      "accounts": [
+        { "name": "admin", "isMut": true, "isSigner": true },
+        {
+          "name": "config",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "434f4e464947" }] }
+        },
+        {
+          "name": "lifecycle",
+          "isMut": true,
+          "isSigner": false,
+          "pda": { "seeds": [{ "kind": "const", "type": "bytes", "value": "4c4946454359434c45" }] }
+        },
+        { "name": "globalMetadata", "isMut": true, "isSigner": false },
+        { "name": "systemProgram", "isMut": false, "isSigner": false },
+        { "name": "clock", "isMut": false, "isSigner": false }
+      ],
+      "args": [
+        { "name": "args", "type": { "defined": "SetMetadataArgs" } }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Config",
+      "docs": ["Global configuration for a Unit09 deployment."],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "admin", "type": "publicKey" },
+          { "name": "feeBps", "type": "u16" },
+          { "name": "maxModulesPerRepo", "type": "u32" },
+          { "name": "isActive", "type": "bool" },
+          { "name": "policyRef", "type": { "array": ["u8", 32] } },
+          { "name": "bump", "type": "u8" },
+          { "name": "createdAt", "type": "i64" },
+          { "name": "updatedAt", "type": "i64" },
+          { "name": "reserved", "type": { "array": ["u8", 64] } }
+        ]
+      }
+    },
+    {
+      "name": "Metrics",
+      "docs": ["Global aggregate metrics for a Unit09 deployment."],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "bump", "type": "u8" },
+          { "name": "totalRepos", "type": "u64" },
+          { "name": "totalModules", "type": "u64" },
+          { "name": "totalForks", "type": "u64" },
+          { "name": "totalObservations", "type": "u64" },
+          { "name": "totalLinesOfCode", "type": "u64" },
+          { "name": "totalFilesProcessed", "type": "u64" },
+          { "name": "createdAt", "type": "i64" },
+          { "name": "updatedAt", "type": "i64" },
+          { "name": "reserved", "type": { "array": ["u8", 32] } }
+        ]
+      }
+    },
+    {
+      "name": "Lifecycle",
+      "docs": ["Lifecycle and write-lock state for the deployment."],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "bump", "type": "u8" },
+          { "name": "isWriteLocked", "type": "bool" },
+          { "name": "isReadOnly", "type": "bool" },
+          { "name": "lifecycleNoteRef", "type": { "array": ["u8", 32] } },
+          { "name": "createdAt", "type": "i64" },
+          { "name": "updatedAt", "type": "i64" },
+          { "name": "reserved", "type": { "array": ["u8", 64] } }
+        ]
+      }
+    },
+    {
+      "name": "Repo",
+      "docs": ["Tracked repository entry used as the anchor for modules and observation stats."],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "bump", "type": "u8" },
+          { "name": "repoKey", "type": "publicKey" },
+          { "name": "authority", "type": "publicKey" },
+          { "name": "name", "type": "string" },
+          { "name": "url", "type": "string" },
+          { "name": "tags", "type": "string" },
+          { "name": "isActive", "type": "bool" },
+          { "name": "allowObservation", "type": "bool" },
+          { "name": "totalObservations", "type": "u64" },
+          { "name": "totalLinesOfCode", "type": "u64" },
+          { "name": "totalFilesProcessed", "type": "u64" },
+          { "name": "totalModules", "type": "u32" },
+          { "name": "lastObservedAt", "type": "i64" },
+          { "name": "lastObserver", "type": "publicKey" },
+          { "name": "createdAt", "type": "i64" },
+          { "name": "updatedAt", "type": "i64" },
+          { "name": "reserved", "type": { "array": ["u8", 64] } }
+        ]
+      }
+    },
+    {
+      "name": "Module",
+      "docs": ["Runnable reusable unit of logic extracted from a Repo."],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "bump", "type": "u8" },
+          { "name": "moduleKey", "type": "publicKey" },
+          { "name": "repo", "type": "publicKey" },
+          { "name": "authority", "type": "publicKey" },
+          { "name": "name", "type": "string" },
+          { "name": "metadataUri", "type": "string" },
+          { "name": "category", "type": "string" },
+          { "name": "tags", "type": "string" },
+          { "name": "isActive", "type": "bool" },
+          { "name": "majorVersion", "type": "u16" },
+          { "name": "minorVersion", "type": "u16" },
+          { "name": "patchVersion", "type": "u16" },
+          { "name": "createdAt", "type": "i64" },
+          { "name": "updatedAt", "type": "i64" },
+          { "name": "reserved", "type": { "array": ["u8", 64] } }
+        ]
+      }
+    },
+    {
+      "name": "ModuleVersion",
+      "docs": ["Historical snapshot of a Module at a given semantic version."],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "bump", "type": "u8" },
+          { "name": "module", "type": "publicKey" },
+          { "name": "authority", "type": "publicKey" },
+          { "name": "majorVersion", "type": "u16" },
+          { "name": "minorVersion", "type": "u16" },
+          { "name": "patchVersion", "type": "u16" },
+          { "name": "metadataUri", "type": "string" },
+          { "name": "changelogUri", "type": "string" },
+          { "name": "label", "type": "string" },
+          { "name": "isStable", "type": "bool" },
+          { "name": "createdAt", "type": "i64" },
+          { "name": "updatedAt", "type": "i64" },
+          { "name": "reserved", "type": { "array": ["u8", 32] } }
+        ]
+      }
+    },
+    {
+      "name": "Fork",
+      "docs": ["Variant of the Unit09 AI with its own metadata and lineage."],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "bump", "type": "u8" },
+          { "name": "forkKey", "type": "publicKey" },
+          { "name": "parent", "type": "publicKey" },
+          { "name": "owner", "type": "publicKey" },
+          { "name": "label", "type": "string" },
+          { "name": "metadataUri", "type": "string" },
+          { "name": "tags", "type": "string" },
+          { "name": "isRoot", "type": "bool" },
+          { "name": "isActive", "type": "bool" },
+          { "name": "depth", "type": "u16" },
+          { "name": "createdAt", "type": "i64" },
+          { "name": "updatedAt", "type": "i64" },
+          { "name": "reserved", "type": { "array": ["u8", 64] } }
+        ]
+      }
+    },
+    {
+      "name": "ModuleRepoLink",
+      "docs": ["Explicit association between a Module and a Repo."],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "bump", "type": "u8" },
+          { "name": "module", "type": "publicKey" },
+          { "name": "repo", "type": "publicKey" },
+          { "name": "linkedBy", "type": "publicKey" },
+          { "name": "isPrimary", "type": "bool" },
+          { "name": "notes", "type": "string" },
+          { "name": "schemaVersion", "type": "u8" },
+          { "name": "createdAt", "type": "i64" },
+          { "name": "updatedAt", "type": "i64" },
+          { "name": "reserved", "type": { "array": ["u8", 63] } }
+        ]
+      }
+    },
+    {
+      "name": "GlobalMetadata",
+      "docs": ["Human-facing global metadata for the Unit09 deployment."],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "bump", "type": "u8" },
+          { "name": "description", "type": "string" },
+          { "name": "tags", "type": "string" },
+          { "name": "websiteUrl", "type": "string" },
+          { "name": "docsUrl", "type": "string" },
+          { "name": "dashboardUrl", "type": "string" },
+          { "name": "iconUri", "type": "string" },
+          { "name": "extraJson", "type": "string" },
+          { "name": "createdAt", "type": "i64" },
+          { "name": "updatedAt", "type": "i64" },
+          { "name": "reserved", "type": { "array": ["u8", 64] } }
+        ]
+      }
+    },
+    {
+      "name": "Authority",
+      "docs": ["Optional authority entry used for role-based access control."],
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "bump", "type": "u8" },
+          { "name": "authority", "type": "publicKey" },
+          { "name": "role", "type": "string" },
+          { "name": "createdAt", "type": "i64" },
+          { "name": "updatedAt", "type": "i64" },
+          { "name": "reserved", "type": { "array": ["u8", 64] } }
+        ]
+      }
+    }
+  ],
+  "types": [
+    {
+      "name": "InitializeArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "admin", "type": "publicKey" },
+          { "name": "feeBps", "type": "u16" },
+          { "name": "maxModulesPerRepo", "type": "u32" },
+          { "name": "policyRef", "type": { "array": ["u8", 32] } },
+          { "name": "lifecycleNoteRef", "type": { "array": ["u8", 32] } }
+        ]
+      }
+    },
+    {
+      "name": "SetConfigArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "feeBps", "type": { "option": "u16" } },
+          { "name": "maxModulesPerRepo", "type": { "option": "u32" } },
+          { "name": "isActive", "type": { "option": "bool" } },
+          { "name": "policyRef", "type": { "option": { "array": ["u8", 32] } } }
+        ]
+      }
+    },
+    {
+      "name": "RegisterRepoArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "repoKey", "type": "publicKey" },
+          { "name": "name", "type": "string" },
+          { "name": "url", "type": "string" },
+          { "name": "tags", "type": "string" },
+          { "name": "allowObservation", "type": "bool" }
+        ]
+      }
+    },
+    {
+      "name": "UpdateRepoArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "name", "type": { "option": "string" } },
+          { "name": "url", "type": { "option": "string" } },
+          { "name": "tags", "type": { "option": "string" } },
+          { "name": "isActive", "type": { "option": "bool" } },
+          { "name": "allowObservation", "type": { "option": "bool" } }
+        ]
+      }
+    },
+    {
+      "name": "RegisterModuleArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "moduleKey", "type": "publicKey" },
+          { "name": "name", "type": "string" },
+          { "name": "metadataUri", "type": "string" },
+          { "name": "category", "type": "string" },
+          { "name": "tags", "type": "string" },
+          { "name": "version", "type": { "tuple": ["u16", "u16", "u16"] } },
+          { "name": "versionLabel", "type": "string" },
+          { "name": "changelogUri", "type": "string" },
+          { "name": "isStable", "type": "bool" },
+          { "name": "createInitialVersionSnapshot", "type": "bool" }
+        ]
+      }
+    },
+    {
+      "name": "UpdateModuleArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "name", "type": { "option": "string" } },
+          { "name": "metadataUri", "type": { "option": "string" } },
+          { "name": "category", "type": { "option": "string" } },
+          { "name": "tags", "type": { "option": "string" } },
+          { "name": "isActive", "type": { "option": "bool" } },
+          { "name": "createVersionSnapshot", "type": "bool" },
+          { "name": "newVersion", "type": { "option": { "tuple": ["u16", "u16", "u16"] } } },
+          { "name": "versionLabel", "type": { "option": "string" } },
+          { "name": "changelogUri", "type": { "option": "string" } },
+          { "name": "isStable", "type": { "option": "bool" } }
+        ]
+      }
+    },
+    {
+      "name": "LinkModuleToRepoArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "isPrimary", "type": "bool" },
+          { "name": "notes", "type": "string" }
+        ]
+      }
+    },
+    {
+      "name": "CreateForkArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "forkKey", "type": "publicKey" },
+          { "name": "parent", "type": { "option": "publicKey" } },
+          { "name": "label", "type": "string" },
+          { "name": "metadataUri", "type": "string" },
+          { "name": "tags", "type": "string" },
+          { "name": "isRoot", "type": "bool" },
+          { "name": "depth", "type": { "option": "u16" } }
+        ]
+      }
+    },
+    {
+      "name": "UpdateForkStateArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "label", "type": { "option": "string" } },
+          { "name": "metadataUri", "type": { "option": "string" } },
+          { "name": "tags", "type": { "option": "string" } },
+          { "name": "isActive", "type": { "option": "bool" } }
+        ]
+      }
+    },
+    {
+      "name": "RecordObservationArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "linesOfCode", "type": "u64" },
+          { "name": "filesProcessed", "type": "u32" },
+          { "name": "modulesTouched", "type": "u32" },
+          { "name": "revision", "type": "string" },
+          { "name": "note", "type": "string" }
+        ]
+      }
+    },
+    {
+      "name": "RecordMetricsArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "totalRepos", "type": { "option": "u64" } },
+          { "name": "totalModules", "type": { "option": "u64" } },
+          { "name": "totalForks", "type": { "option": "u64" } },
+          { "name": "totalObservations", "type": { "option": "u64" } },
+          { "name": "totalLinesOfCode", "type": { "option": "u64" } },
+          { "name": "totalFilesProcessed", "type": { "option": "u64" } }
+        ]
+      }
+    },
+    {
+      "name": "SetMetadataArgs",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          { "name": "description", "type": { "option": "string" } },
+          { "name": "tags", "type": { "option": "string" } },
+          { "name": "websiteUrl", "type": { "option": "string" } },
+          { "name": "docsUrl", "type": { "option": "string" } },
+          { "name": "dashboardUrl", "type": { "option": "string" } },
+          { "name": "iconUri", "type": { "option": "string" } },
+          { "name": "extraJson", "type": { "option": "string" } }
+        ]
+      }
+    }
+  ],
+  "events": [
+    {
+      "name": "ConfigUpdated",
+      "fields": [
+        { "name": "admin", "type": "publicKey", "index": false },
+        { "name": "feeBps", "type": "u16", "index": false },
+        { "name": "maxModulesPerRepo", "type": "u32", "index": false }
+      ]
+    },
+    {
+      "name": "RepoRegistered",
+      "fields": [
+        { "name": "repo", "type": "publicKey", "index": true },
+        { "name": "owner", "type": "publicKey", "index": true },
+        { "name": "url", "type": "string", "index": false }
+      ]
+    },
+    {
+      "name": "RepoUpdated",
+      "fields": [
+        { "name": "repo", "type": "publicKey", "index": true },
+        { "name": "url", "type": "string", "index": false }
+      ]
+    },
+    {
+      "name": "RepoActivationChanged",
+      "fields": [
+        { "name": "repo", "type": "publicKey", "index": true },
+        { "name": "isActive", "type": "bool", "index": false },
+        { "name": "updatedAt", "type": "i64", "index": false }
+      ]
+    },
+    {
+      "name": "ModuleRegistered",
+      "fields": [
+        { "name": "module", "type": "publicKey", "index": true },
+        { "name": "repo", "type": "publicKey", "index": true },
+        { "name": "owner", "type": "publicKey", "index": true },
+        { "name": "category", "type": "string", "index": false },
+        { "name": "majorVersion", "type": "u16", "index": false },
+        { "name": "minorVersion", "type": "u16", "index": false },
+        { "name": "patchVersion", "type": "u16", "index": false }
+      ]
+    },
+    {
+      "name": "ModuleVersionRegistered",
+      "fields": [
+        { "name": "module", "type": "publicKey", "index": true },
+        { "name": "majorVersion", "type": "u16", "index": false },
+        { "name": "minorVersion", "type": "u16", "index": false },
+        { "name": "patchVersion", "type": "u16", "index": false },
+        { "name": "isStable", "type": "bool", "index": false }
+      ]
+    },
+    {
+      "name": "ModuleLinkedToRepo",
+      "fields": [
+        { "name": "module", "type": "publicKey", "index": true },
+        { "name": "repo", "type": "publicKey", "index": true },
+        { "name": "linkedBy", "type": "publicKey", "index": true },
+        { "name": "isPrimary", "type": "bool", "index": false },
+        { "name": "updatedAt", "type": "i64", "index": false }
+      ]
+    },
+    {
+      "name": "ForkCreated",
+      "fields": [
+        { "name": "fork", "type": "publicKey", "index": true },
+        { "name": "owner", "type": "publicKey", "index": true },
+        { "name": "parent", "type": "publicKey", "index": false },
+        { "name": "isRoot", "type": "bool", "index": false },
+        { "name": "depth", "type": "u16", "index": false },
+        { "name": "createdAt", "type": "i64", "index": false }
+      ]
+    },
+    {
+      "name": "ForkUpdated",
+      "fields": [
+        { "name": "fork", "type": "publicKey", "index": true },
+        { "name": "owner", "type": "publicKey", "index": true },
+        { "name": "previousIsActive", "type": "bool", "index": false },
+        { "name": "newIsActive", "type": "bool", "index": false },
+        { "name": "updatedAt", "type": "i64", "index": false }
+      ]
+    },
+    {
+      "name": "ObservationRecorded",
+      "fields": [
+        { "name": "repo", "type": "publicKey", "index": true },
+        { "name": "observer", "type": "publicKey", "index": true },
+        { "name": "linesOfCode", "type": "u64", "index": false },
+        { "name": "filesProcessed", "type": "u32", "index": false },
+        { "name": "modulesTouched", "type": "u32", "index": false },
+        { "name": "revision", "type": "string", "index": false },
+        { "name": "note", "type": "string", "index": false },
+        { "name": "observedAt", "type": "i64", "index": false }
+      ]
+    },
+    {
+      "name": "MetricsReconciled",
+      "fields": [
+        { "name": "admin", "type": "publicKey", "index": true },
+        { "name": "totalRepos", "type": "u64", "index": false },
+        { "name": "totalModules", "type": "u64", "index": false },
+        { "name": "totalForks", "type": "u64", "index": false },
+        { "name": "totalObservations", "type": "u64", "index": false },
+        { "name": "totalLinesOfCode", "type": "u64", "index": false },
+        { "name": "totalFilesProcessed", "type": "u64", "index": false },
+        { "name": "updatedAt", "type": "i64", "index": false }
+      ]
+    },
+    {
+      "name": "GlobalMetadataUpdated",
+      "fields": [
+        { "name": "admin", "type": "publicKey", "index": true },
+        { "name": "description", "type": "string", "index": false },
+        { "name": "websiteUrl", "type": "string", "index": false },
+        { "name": "docsUrl", "type": "string", "index": false },
+        { "name": "dashboardUrl", "type": "string", "index": false },
+        { "name": "iconUri", "type": "string", "index": false },
+        { "name": "updatedAt", "type": "i64", "index": false }
+      ]
+    }
+  ],
+  "errors": [
+    { "code": 6000, "name": "InvalidAdmin", "msg": "Invalid admin signer" },
+    { "code": 6001, "name": "InvalidAuthority", "msg": "Invalid authority signer" },
+    { "code": 6002, "name": "InvalidForkOwner", "msg": "Invalid fork owner signer" },
+    { "code": 6003, "name": "InvalidPda", "msg": "Account does not match expected PDA" },
+    { "code": 6004, "name": "InternalError", "msg": "Internal error" },
+    { "code": 6005, "name": "InvalidFeeBps", "msg": "Invalid fee basis points" },
+    { "code": 6006, "name": "ValueOutOfRange", "msg": "Numeric value out of allowed range" },
+    { "code": 6007, "name": "StringEmpty", "msg": "String must not be empty" },
+    { "code": 6008, "name": "StringTooLong", "msg": "String exceeds maximum length" },
+    { "code": 6009, "name": "ObservationDataTooLarge", "msg": "Observation payload exceeds limits" },
+    { "code": 6010, "name": "MetadataInvalid", "msg": "Metadata or URI is invalid" },
+    { "code": 6011, "name": "DeploymentInactive", "msg": "Deployment is inactive" },
+    { "code": 6012, "name": "TimestampInFuture", "msg": "Timestamp is too far in the future" },
+    { "code": 6013, "name": "InvalidTimeRange", "msg": "Invalid time range" }
+  ],
+  "metadata": {
+    "address": "Unit09Program11111111111111111111111111111111",
+    "origin": "unit09.org"
+  }
+}
