@@ -1,0 +1,9 @@
+[workspace]
+members = ["programs/simple_note"]
+
+[provider]
+cluster = "localnet"
+wallet = "~/.config/solana/id.json"
+
+[programs.localnet]
+simple_note = "SmplNote1111111111111111111111111111111111"

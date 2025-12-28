@@ -1,0 +1,68 @@
+version: "3.9"
+
+services:
+  solana-localnet:
+    image: solanalabs/solana:v1.18.18
+    command: >
+      sh -c "solana-test-validator
+      --reset
+      --quiet
+      --rpc-port 8899"
+    ports:
+      - "8899:8899"
+      - "8900:8900"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8899"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  unit09-api:
+    image: node:20-alpine
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+    environment:
+      - NODE_ENV=development
+      - UNIT09_SOLANA_RPC=http://solana-localnet:8899
+      - UNIT09_PROGRAM_ID=Unit09Program11111111111111111111111111111
+    volumes:
+      - ../../services/api:/app
+    ports:
+      - "8080:8080"
+    depends_on:
+      solana-localnet:
+        condition: service_healthy
+
+  unit09-worker:
+    image: node:20-alpine
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+    environment:
+      - NODE_ENV=development
+      - UNIT09_SOLANA_RPC=http://solana-localnet:8899
+      - UNIT09_PROGRAM_ID=Unit09Program11111111111111111111111111111
+      - UNIT09_API_BASE=http://unit09-api:8080/api
+    volumes:
+      - ../../services/worker:/app
+    depends_on:
+      solana-localnet:
+        condition: service_healthy
+      unit09-api:
+        condition: service_started
+
+  unit09-scheduler:
+    image: node:20-alpine
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+    environment:
+      - NODE_ENV=development
+      - UNIT09_API_BASE=http://unit09-api:8080/api
+    volumes:
+      - ../../services/scheduler:/app
+    depends_on:
+      unit09-api:
+        condition: service_started
+
+networks:
+  default:
+    name: unit09-localnet
