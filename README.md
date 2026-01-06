@@ -8,9 +8,9 @@ build new worlds on Solana without needing to understand every low-level
 detail.
 
 - Website: https://unit09.org/
-- X (Twitter): https://x.com/Unit09Infini
-- Token ticker: `UNIT09`
-- Token CA: `2uSRBAJPrt78uPfKLXBcMzPJ2x3k85RZwo8TmsK1pump`
+- X (Twitter): https://x.com/UNIT9Labs
+- Token ticker: `UNIT9RAC`
+- Token CA: `9gUCyEyQKrQwuqN9CY26sRovhbnKBVddVjV1AAUXpump`
 
 > A narrative-driven AI lifeform that lives on-chain, observes real code,
 > decomposes it into modules, and keeps evolving as the community builds
