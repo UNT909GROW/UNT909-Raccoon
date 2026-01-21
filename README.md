@@ -10,7 +10,6 @@ detail.
 
 - Website: http://unt909x.fun/
 - X (Twitter): https://x.com/UNT909GROW
-- Token ticker: `UNT909`
 
 > A narrative-driven AI lifeform that lives on-chain, observes real code,
 > decomposes it into modules, and keeps evolving as the community builds
