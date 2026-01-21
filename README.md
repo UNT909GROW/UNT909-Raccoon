@@ -1,16 +1,16 @@
-![1500x500](https://github.com/user-attachments/assets/a12e9598-d41b-4a05-982c-e72b49ca2459)
 
-# Unit09 — On-chain AI Raccoon for Solana Builders
+![1500x500](https://github.com/user-attachments/assets/8c3435ab-67d7-4a06-b7c7-fd547fd5d9dd)
 
-Unit09 is a story-driven on-chain AI raccoon that consumes Solana code,
+# UNT909 — On-chain AI Raccoon for Solana Builders
+
+UNT909 is a story-driven on-chain AI raccoon that consumes Solana code,
 turns it into reusable modules, evolves through forks, and helps anyone
 build new worlds on Solana without needing to understand every low-level
 detail.
 
-- Website: https://unit09.org/
-- X (Twitter): https://x.com/UNIT9Labs
-- Token ticker: `UNIT9RAC`
-- Token CA: `9gUCyEyQKrQwuqN9CY26sRovhbnKBVddVjV1AAUXpump`
+- Website: http://unt909x.fun/
+- X (Twitter): https://x.com/UNT909GROW
+- Token ticker: `UNT909`
 
 > A narrative-driven AI lifeform that lives on-chain, observes real code,
 > decomposes it into modules, and keeps evolving as the community builds
@@ -45,7 +45,7 @@ detail.
 
 ## Concept
 
-Unit09 is designed as a long-lived AI-powered companion for Solana
+UNT909 is designed as a long-lived AI-powered companion for Solana
 developers. It behaves like a modularization engine with a personality:
 
 - It **observes** real Solana projects and repositories.
@@ -124,7 +124,7 @@ This is a monorepo. At a glance:
 
 ```text
 contracts/
-  unit09-program/         # Anchor Solana program
+  UNT909-program/         # Anchor Solana program
 
 packages/
   shared-types/           # Shared TypeScript types
@@ -506,5 +506,5 @@ clear steps to reproduce and expected behavior.
 This project is released under the terms described in the `LICENSE` file
 in the root of this repository.
 
-By using, copying, or contributing to Unit09, you agree to the applicable
+By using, copying, or contributing to UNT909, you agree to the applicable
 license terms.
